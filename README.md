@@ -4,7 +4,29 @@ El código está escrito en TypeScript y usamos Deno para ejecutarlo, puedes usa
 
 Si usas Node, deberás configurar TypeScript, por lo que te recomiendo Deno o Bun.
 
+## Ejecución de Archivos
 
+### Ejecutar Archivo Una Vez
+```
+cd 01-Patrones-Creacionales/01-Builder
+```
+```
+deno builder.ts
+```
+```
+deno builder.task.ts
+```
+
+### Ejecutar Archivo de Forma Automatica
+```
+cd 01-Patrones-Creacionales/01-Builder
+```
+```
+deno --watch builder.ts
+```
+```
+deno --watch builder.task.ts
+```
 
 # Recursos adicionales
 
