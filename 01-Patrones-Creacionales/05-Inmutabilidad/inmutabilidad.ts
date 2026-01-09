@@ -6,3 +6,103 @@
  *  * Es útil para mantener un historial de estados en aplicaciones interactivas.
  *
  */
+
+import { COLORS } from "../../helpers/colors.ts";
+
+class CodeEditorState {
+    readonly content: string;
+    readonly cursorPosition: number;
+    readonly unSaveChanges: boolean;
+
+    constructor(content: string, cursorPosition: number, unSaveChanges: boolean){
+        this.content = content;
+        this.cursorPosition = cursorPosition;
+        this.unSaveChanges = unSaveChanges;
+    }
+
+    copyWith(
+        {content, cursorPosition, unSaveChanges }: Partial<CodeEditorState>
+    ): CodeEditorState {
+        return new CodeEditorState(
+            content ?? this.content,
+            cursorPosition ?? this.cursorPosition,
+            unSaveChanges ?? this.unSaveChanges,
+        )
+    }
+
+    displayState(){
+        console.log('%cEstado del Editor: ', COLORS.green);
+        console.log(`
+            Contenido: ${this.content}
+            Cursor Position: ${this.cursorPosition}
+            UnSave Changes: ${this.unSaveChanges}
+        `);
+    }
+}
+
+class CodeEditorHistory {
+    private history: CodeEditorState[] = [];
+    private currentIndex: number = -1;
+
+    save(state: CodeEditorState): void {
+        if(this.currentIndex < this.history.length - 1){
+            this.history = this.history.splice(0, this.currentIndex + 1)
+        }
+        this.history.push(state);
+        this.currentIndex++;
+    }
+
+    undo(): CodeEditorState | null {
+        if(this.currentIndex > 0){
+            this.currentIndex--;
+            return this.history[this.currentIndex];
+        }
+        return null;
+    }
+
+    redo(): CodeEditorState | null {
+        if(this.currentIndex < this.history.length - 1){
+            this.currentIndex++;
+            return this.history[this.currentIndex];
+        }
+        return null;
+    }
+
+}
+
+function main(){
+
+    const history = new CodeEditorHistory();
+    let editorState = new CodeEditorState("console.log('Hola Mundo')", 2, false);
+    
+    history.save(editorState);
+
+    console.log('%cEstado Inicial', COLORS.blue)
+    editorState.displayState();
+    
+    editorState = editorState.copyWith({
+        content: "console.log('Hola Mundo 2)",
+        cursorPosition: 3,
+        unSaveChanges: true
+    });
+    history.save(editorState);
+
+    console.log('%cEstado Despues del Primer Cambio', COLORS.blue)
+    editorState.displayState();
+
+    console.log('%cEstado Despues del Mover Cursor', COLORS.blue)
+    editorState = editorState.copyWith({ cursorPosition: 5 });
+    history.save(editorState);
+    editorState.displayState();
+
+    console.log('%cEstado Despues del Undo', COLORS.blue)
+    editorState = history.undo()!;
+    editorState.displayState();
+
+    console.log('%cEstado Despues del Redo', COLORS.blue)
+    editorState = history.redo()!;
+    editorState.displayState();
+
+}
+
+main();
