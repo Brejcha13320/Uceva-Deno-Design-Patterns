@@ -1,4 +1,3 @@
-import { COLORS } from '../../helpers/colors.ts';
 /**
  * ! Patrón Builder:
  * Es un patrón de diseño creacional que nos permite construir objetos complejos
@@ -13,6 +12,8 @@ import { COLORS } from '../../helpers/colors.ts';
  *
  * https://refactoring.guru/es/design-patterns/builder
  */
+
+import { COLORS } from '../../helpers/colors.ts';
 
 class Computer {
 
