@@ -7,7 +7,7 @@
  * * la cantidad de memoria que utilizan.
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from '../../helpers/colors.ts';
 
 // 1. Clase que representa el tipo de bala - BulletType (Flyweight)
 class BulletType {
@@ -45,8 +45,14 @@ class BulletTypeFactory {
 
     // TODO: El key, debería de ser un identificador único para cada tipo de bala
     // name-damage-color
+    const key = `${name}-${damage}-${color}`;
+    
+    if(!this.bulletTypes[key]){
+      console.log(`%cCreando una instancia del BulletType ${key}`, COLORS.red);
+      this.bulletTypes[key] = new BulletType(name, damage, color);
+    }
 
-    throw new Error('Method not implemented.');
+    return this.bulletTypes[key];
   }
 }
 

@@ -11,7 +11,7 @@
  * https://refactoring.guru/es/design-patterns/adapter
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from '../../helpers/colors.ts';
 
 // 1. Interfaz PaymentProcessor
 interface PaymentProcessor {
@@ -45,18 +45,36 @@ class MercadoPagoService {
 // 3. Clases Adaptadoras
 
 // Adaptador para PayPal
-class PayPalAdapter {
+class PayPalAdapter implements PaymentProcessor {
   // TODO: Implementar la interfaz PaymentProcessor
+
+  private payPalService = new PayPalService();
+
+  processPayment(amount: number): void {
+    this.payPalService.sendPayment(amount);
+  }
 }
 
 // Adaptador para Stripe
-class StripeAdapter {
+class StripeAdapter implements PaymentProcessor {
   // TODO: Implementar la interfaz PaymentProcessor
+
+  private stripeService = new StripeService();
+
+  processPayment(amount: number): void {
+    this.stripeService.makeCharge(amount);
+  }
 }
 
 // Adaptador para MercadoPago
-class MercadoPagoAdapter {
+class MercadoPagoAdapter implements PaymentProcessor {
   // TODO: Implementar la interfaz PaymentProcessor
+
+  private mercadoPagoService = new MercadoPagoService();
+
+  processPayment(amount: number): void {
+    this.mercadoPagoService.pay(amount);
+  }
 }
 
 // 4. Código Cliente para probar el Adapter
